@@ -6,7 +6,25 @@ on:
       - main
 
 jobs:
+  # --- NEW JOB: We run tests in GitHub's cloud! ---
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Run Tests
+        run: npm test
+
+  # --- EXISTING JOB: Deploy to your laptop ---
   build-and-deploy:
+    # "needs: test" means this job WILL NOT RUN if the test job fails!
+    needs: test
     runs-on: self-hosted
 
     steps:
@@ -23,8 +41,6 @@ jobs:
           docker rm node-backend-container
 
       - name: Run New Docker Container
-        # Notice the -e flag below! 
-        # This injects the GitHub secret into your Docker container as an environment variable.
         run: |
           docker run -d -p 3000:3000 \
           -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
