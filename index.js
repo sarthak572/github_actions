@@ -8,6 +8,9 @@ app.get('/', (req, res) => {
 app.get('/health', (req,res)=>{
   res.send("hello everyone health checkpoint is working fine ")
 })
+app.get('/healths', (req,res)=>{
+  res.send("hello everyone is a fool health checkpoint is working fine ")
+})
 
 // A new route to test our environment variables / secrets
 app.get('/status', (req, res) => {
