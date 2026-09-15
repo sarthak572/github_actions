@@ -8,5 +8,5 @@ test('Addition works correctly', () => {
 
 test('Failing test example', () => {
   // If you uncomment the line below, the test will fail and block deployment!
-  // assert.strictEqual(add(2, 2), 5); 
+  assert.strictEqual(add(2, 2), 5); 
 });
