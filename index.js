@@ -3,7 +3,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-  res.send('Hello from Dockerized Node.js Backend!');
+  res.send('Hello from Docke   rized Node.js Backend!');
 });
 
 // A new route to test our environment variables / secrets
