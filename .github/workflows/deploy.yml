@@ -4,9 +4,19 @@ on:
   push:
     branches:
       - main
+  # Run tests when someone opens a Pull Request
+  pull_request:
+    branches:
+      - main
+  # Adds a manual "Run Workflow" button in the GitHub UI
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for manual deploy'
+        required: false
+        default: 'Just testing the button!'
 
 jobs:
-  # --- NEW JOB: We run tests in GitHub's cloud! ---
   test:
     runs-on: ubuntu-latest
     steps:
@@ -21,15 +31,19 @@ jobs:
       - name: Run Tests
         run: npm test
 
-  # --- EXISTING JOB: Deploy to your laptop ---
   build-and-deploy:
-    # "needs: test" means this job WILL NOT RUN if the test job fails!
     needs: test
+    # Conditionals! Do not deploy if this is just a Pull Request
+    if: github.event_name != 'pull_request'
     runs-on: self-hosted
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+
+      - name: Log manual trigger reason (if applicable)
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "Manual deploy reason - ${{ github.event.inputs.reason }}"
 
       - name: Build Docker Image
         run: docker build -t my-node-backend .
