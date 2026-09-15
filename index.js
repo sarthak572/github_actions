@@ -5,6 +5,9 @@ const port = process.env.PORT || 3000;
 app.get('/', (req, res) => {
   res.send('Hello froDockerrized Node.js Backend!');
 });
+app.get('/health', (req,res)=>{
+  res.send("hello everyone health checkpoint is working fine ")
+})
 
 // A new route to test our environment variables / secrets
 app.get('/status', (req, res) => {
