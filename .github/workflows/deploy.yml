@@ -1,0 +1,28 @@
+name: Deploy to Local Docker
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    # Use self-hosted to run on your own machine
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Build Docker Image
+        run: docker build -t my-node-backend .
+
+      - name: Stop and Remove Old Container (if exists)
+        # We ignore errors here in case the container doesn't exist yet
+        continue-on-error: true
+        run: |
+          docker stop node-backend-container
+          docker rm node-backend-container
+
+      - name: Run New Docker Container
+        run: docker run -d -p 3000:3000 --name node-backend-container my-node-backend
