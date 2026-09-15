@@ -12,7 +12,7 @@ app.get('/status', (req, res) => {
   const dbPassword = process.env.DB_PASSWORD;
   
   if (dbPassword) {
-    res.send(`Secure backend is running! We connected to the database with password: ${dbPassword}`);
+    res.send(`Secure backend testing pr logic is running! We connected to the database with password: ${dbPassword}`);
   } else {
     res.send('Warning: No DB_PASSWORD provided in environment variables! Server is running insecurely.');
   }
